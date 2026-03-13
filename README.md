@@ -378,60 +378,10 @@ Map.addLayer(
 ```
 A pixel-wise NDVI linear trend map is created for Bavarian forests (2013–2025) using the annual NDVI composites. The slope (scale) indicates yearly NDVI change per pixel, with negative values showing decreases, near-zero values stable trends, and positive values increases. Forested areas are visualized with a color palette, and state and district boundaries are overlaid for reference. The map includes a colorbar, north arrow, scale bar, gridlines, and a legend, and is saved as a high-resolution PNG.
 
-``` python
-# NDVI Linear Trend Map for Bavaria (2013–2025)
-fig = plt.figure(figsize=(10,8))
 
-bavaria_region = [13.9, 47.2, 8.9, 50.6]  # Bounding box of Bavaria
+![Pixel-wise Linear Trend Analysis of NDVI in Bavarian Forests (2013–2025)](results/lintrend_NDVI_Bavaria (1).png)
 
-# Visualization parameters for NDVI trend
-trend_vis = {
-    'min': -0.01,
-    'max': 0.01,
-    'palette': ['#e56e38', '#fff0c2', '#fffef2', '#6da48f', '#25424c']
-}
 
-# Generate map with Cartopy projection using pixel-wise slope
-ax = cartoee.get_map(
-    lintrend.select('scale'),
-    region=bavaria_region,
-    vis_params=trend_vis,
-    proj=ccrs.PlateCarree()
-)
-ax.set_aspect(1.5)
-
-# Add vertical colorbar
-cbar = cartoee.add_colorbar(ax, trend_vis, loc='right', label="NDVI Trend (change per year)")
-
-# Add north arrow and scale bar
-cartoee.add_north_arrow(ax, xy=(0.93, 0.93), text="N", fontsize=10, arrow_length=0.06, width=2, headwidth=7)
-cartoee.add_scale_bar_lite(ax, xy=(0.8, 0.9), unit="km", fontsize=15)
-
-# Add gridlines (labels only left and bottom)
-gl = ax.gridlines(draw_labels=True)
-gl.bottom_labels = True
-gl.left_labels   = True
-gl.top_labels    = False
-gl.right_labels  = False
-
-# Draw Bavaria and district boundaries
-bavaria_gdf.boundary.plot(ax=ax, edgecolor='black', linewidth=1.5, zorder=5)
-districts_gdf.boundary.plot(ax=ax, edgecolor='black', linewidth=0.8, zorder=4)
-
-# Add main title
-ax.set_title("Trend of NDVI in Bavarian Forests (2013–2025)", fontsize=15)
-
-# Create legend for boundaries
-bavaria_line = mlines.Line2D([], [], color='black', linewidth=1.5, label='Bavarian Boundary')
-district_line = mlines.Line2D([], [], color='black', linewidth=0.8, label='Bavarian Districts')
-ax.legend(handles=[bavaria_line, district_line], loc='lower right', fontsize=10, frameon=True)
-
-plt.tight_layout()
-
-# Save figure
-plt.savefig("lintrend_NDVI_Bavaria.png", dpi=300)
-plt.show()
-```
 
 #### 3.2 Sen´s Slope Trend
 Sen’s Slope, a non-parametric method for linear trend detection, is calculated pixel-wise for Bavarian forests. The annual NDVI collection is reordered so that the first band represents time, and the second NDVI values. The resulting slope map highlights yearly NDVI changes, with brown indicating decreasing forest greenness, yellow stable trends, and green increasing NDVI. The map is added to the interactive viewer for exploration.
@@ -468,119 +418,10 @@ Map
 ```
 Annual mean NDVI values for Bavarian forests (2013–2025) are plotted to visualize trends derived from Sen’s Slope analysis. The line plot shows yearly forest greenness, highlighting increases or decreases over the study period, with markers at each year and a grid for readability. The figure is saved as a high-resolution PNG for further use.
 
-``` python
-# Plot annual mean NDVI over time (2013–2025) for Bavarian forests
 
-plt.figure(figsize=(10,5)) # Set figure size
+![Pixel-wise Sen´s Slope Analysis of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_plot (1).png)
 
-# Line plot of mean NDVI per year with markers
-plt.plot(
-    annual_df['year'],        # x-axis: year
-    annual_df['mean_NDVI'],   # y-axis: mean NDVI for all forest pixels
-    marker='o',               # circular markers at each data point
-    linewidth=0.8
-)
 
-# Label axes
-plt.xlabel("Year")
-plt.ylabel("NDVI")
-# Add main title
-plt.title("Sen´s Slope NDVI of Forests in Bavaria (2013–2025) with Linear Trend")
-plt.grid(True)                # Add grid for readability
-plt.savefig("sen_slope_plot.png", dpi=300)
-plt.show()
-```
-This map visualizes pixel-wise Sen’s Slope of NDVI for Bavarian forests from 2013–2025. Positive slopes indicate increasing forest greenness, negative slopes indicate decreasing NDVI, and near-zero slopes indicate stable areas. State and district boundaries are overlaid for reference. The map includes a colorbar, north arrow, scale bar, gridlines, and legend, and is saved as a high-resolution PNG.
-
-``` python
-# Sen's Slope Map of NDVI in Bavarian Forests (2013–2025)
-
-fig = plt.figure(figsize=(10,8))
-
-bavaria_region = [13.9, 47.2, 8.9, 50.6] # Define region extent for Bavaria
-
-# Visualization parameters for Sen's Slope
-sens_vis = {
-    'min': -0.002,
-    'max': 0.002,
-    'palette': ['#6e462c', '#9c8448', '#cccc66', '#9cab68', '#306466']
-}
-
-# Create map of Sen's Slope
-ax = cartoee.get_map(
-    sens.select('slope'),
-    region=bavaria_region,
-    vis_params=sens_vis,
-    proj=ccrs.PlateCarree()
-)
-
-ax.set_aspect(1.5) # avoid map distortion
-
-# Add colorbar
-cbar = cartoee.add_colorbar(
-    ax, sens_vis,
-    loc='right',
-    label="Sen's Slope (NDVI change per year)"
-)
-
-# Add North Arrow
-cartoee.add_north_arrow(
-    ax,
-    xy=(0.93, 0.93),   # Top right corner
-    text="N",
-    fontsize=10,       # smaller font for the "N"
-    arrow_length=0.06, # optional: scales the arrow itself
-    width=2,
-    headwidth=7   # optional: thinner arrow
-)
-
-# Add scale bar at top right
-cartoee.add_scale_bar_lite(
-    ax,
-    xy=(0.8, 0.9),
-    unit="km",
-    fontsize=15
-)
-
-# Add gridlines
-gl = ax.gridlines(draw_labels=True)
-gl.bottom_labels = True
-gl.left_labels   = True
-gl.top_labels    = False
-gl.right_labels  = False
-
-# Draw Bavaria boundary (thicker line)
-bavaria_gdf.boundary.plot(
-    ax=ax,
-    edgecolor='black',
-    linewidth=1.5,
-    zorder=5
-)
-
-# Draw districts inside Bavaria (thinner line)
-districts_gdf.boundary.plot(
-    ax=ax,
-    edgecolor='black',
-    linewidth=0.8,
-    zorder=4
-)
-
-# Add Main Title
-ax.set_title(label="Sen's Slope of NDVI in Bavarian Forests (2013-2025)", fontsize=15)
-
-# Create custom legend for boundaries
-bavaria_line = mlines.Line2D([], [], color='black', linewidth=1.5, label='Bavarian Boundary')
-district_line = mlines.Line2D([], [], color='black', linewidth=0.8, label='Bavarian Districts')
-
-ax.legend(handles=[bavaria_line, district_line],
-          loc='lower right', fontsize=10, frameon=True)
-
-# Adjust layout and save figure
-plt.tight_layout()
-plt.savefig("Sensslope_map.png", dpi=300)
-
-plt.show()
-```
 
 ### 4. Methodology Description
 
