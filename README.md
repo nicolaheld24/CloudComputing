@@ -127,7 +127,8 @@ landcover = ee.Image("ESA/WorldCover/v200/2021")
 forest = landcover.select('Map').eq(10).clip(bavaria).selfMask()
 
 # Add forest layer to the map for visualization
-Map.addLayer(forest, {'palette': 'green'}, 'Forest areas')```
+Map.addLayer(forest, {'palette': 'green'}, 'Forest areas')
+```
 
 
 #### 1.5 Load Landsat Collection & Apply Cloud Masking
