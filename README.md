@@ -379,7 +379,7 @@ Map.addLayer(
 A pixel-wise NDVI linear trend map is created for Bavarian forests (2013–2025) using the annual NDVI composites. The slope (scale) indicates yearly NDVI change per pixel, with negative values showing decreases, near-zero values stable trends, and positive values increases. Forested areas are visualized with a color palette, and state and district boundaries are overlaid for reference. The map includes a colorbar, north arrow, scale bar, gridlines, and a legend, and is saved as a high-resolution PNG.
 
 
-![Pixel-wise Linear Trend Analysis of NDVI in Bavarian Forests (2013–2025)](results/lintrend_NDVI_Bavaria (1).png)
+![Pixel-wise Linear Trend Analysis of NDVI in Bavarian Forests (2013–2025)](results/lintrend_NDVI_bavaria_forest.png)
 
 
 
@@ -419,7 +419,9 @@ Map
 Annual mean NDVI values for Bavarian forests (2013–2025) are plotted to visualize trends derived from Sen’s Slope analysis. The line plot shows yearly forest greenness, highlighting increases or decreases over the study period, with markers at each year and a grid for readability. The figure is saved as a high-resolution PNG for further use.
 
 
-![Pixel-wise Sen´s Slope Analysis of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_plot (1).png)
+![Pixel-wise Sen´s Slope Plot of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_bavaria_forest_plot.png)
+
+![Pixel-wise Sen´s Slope Map of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_bavaria_forest_map.png)
 
 
 
