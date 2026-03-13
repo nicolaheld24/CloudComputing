@@ -16,8 +16,8 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
 ---
 
 ## Workflow 
-# - [1. Data Preparation](#1-data-preparation)
-  ## - [1.1 Import Required Libraries](#11-import-required-libraries)
+- [1. Data Preparation](#1-data-preparation)
+  - [1.1 Import Required Libraries](#11-import-required-libraries)
   - [1.2 Create Linkage between Python notebook & GEE](#12-create-linkage-between-python-notebook--gee)
   - [1.3 Load Bavaria Boundary & Districts of Bavaria](#13-load-bavaria-boundary--districts-of-bavaria)
   - [1.4 Load Land Cover & Forest Mask](#14-load-land-cover--forest-mask)
