@@ -347,34 +347,8 @@ The plot shows the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue 
 ##### 2.5.3 Boxplots of monthly NDVIs
 Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and spread of NDVI values for a single year, highlighting inter-annual variability and seasonal trends in forest greenness.
 
-``` python
-# Boxplots of monthly NDVI values for Bavarian forests
-plt.figure(figsize=(12,6))
+![Monthly NDVI Boxplots in Bavarian Forests (2013–2025)](results/monthly_boxplots_ndvi_bavaria_forests.png)
 
-sns.boxplot(
-    x='year',
-    y='mean_NDVI',
-    data=monthly_df,
-    showmeans=False,
-    widths=0.5,
-    showfliers=False,
-    patch_artist=True,
-    medianprops={"color":"white", "linewidth":0.7},
-    boxprops={"facecolor": "C0", "edgecolor":"white", "linewidth": 0.5},
-    whiskerprops={"color": "C0", "linewidth": 1.2},
-    capprops={"color": "C0", "linewidth": 1.2},
-    label="Mean NDVI per year"
-)
-
-plt.xlabel("Growing Season of Year", fontsize=14)
-plt.ylabel("NDVI", fontsize=14)
-plt.title("Monthly Boxplots of NDVI in Bavarian Forests (Apr–Oct, 2013–2025)", fontsize=18)
-plt.tick_params(axis='x', labelsize=12)
-plt.tick_params(axis='y', labelsize=12)
-plt.grid(True)
-plt.legend(loc="lower center")
-plt.show()
-```
 
 ### 3. Raster Statistics // Pixel-wise Trend Analysis
 #### 3.1 NDVI Linear Trend
