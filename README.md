@@ -207,56 +207,9 @@ Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid
 #### 2.3 Single Median NDVI Map (overall period)
 A median NDVI map for Bavarian forests (2013–2025) is created using the annual NDVI composites. Forested areas are visualized with a defined color palette, and both state and district boundaries are overlaid for reference. The map includes a vertical colorbar, north arrow, scale bar, gridlines, and a legend to clearly indicate Bavarian boundaries and districts. The figure is saved as a high-resolution PNG for further use.
 
-``` python
-# Median NDVI map for Bavaria (2013–2025)
+![Median NDVI in Bavarian Forests (2013-2025)](results/median_NDVI_Bavaria.png)
 
-fig = plt.figure(figsize=(10,8))
-bavaria_region = [13.9, 47.2, 8.9, 50.6]  # Bounding box of Bavaria
 
-# NDVI visualization parameters (median values)
-median_vis = {"min": 0.2, "max": 0.5, "palette": ['#8B4513', '#FFFF00', '#008000']}
-
-# Generate map using Cartopy projection
-ax = cartoee.get_map(
-    annualNDVI.select('NDVI'),
-    region=bavaria_region,
-    vis_params=median_vis,
-    proj=ccrs.PlateCarree()
-)
-ax.set_aspect(1.5)  # prevent distortion
-
-# Add vertical colorbar
-cbar = cartoee.add_colorbar(ax, median_vis, loc='right', label="Median NDVI")
-
-# Add north arrow and scale bar
-cartoee.add_north_arrow(ax, xy=(0.93, 0.93), text="N", fontsize=10, arrow_length=0.06, width=2, headwidth=7)
-cartoee.add_scale_bar_lite(ax, xy=(0.8, 0.9), unit="km", fontsize=15)
-
-# Add gridlines (labels only left and bottom)
-gl = ax.gridlines(draw_labels=True)
-gl.bottom_labels = True
-gl.left_labels   = True
-gl.top_labels    = False
-gl.right_labels  = False
-
-# Draw Bavaria and district boundaries
-bavaria_gdf.boundary.plot(ax=ax, edgecolor='black', linewidth=1.5, zorder=5)
-districts_gdf.boundary.plot(ax=ax, edgecolor='black', linewidth=0.6, zorder=4)
-
-# Add main title
-ax.set_title("Median NDVI in Bavarian Forests (2013–2025)", fontsize=15)
-
-# Create legend handles and add legend
-bavaria_line = mlines.Line2D([], [], color='black', linewidth=1.5, label='Bavarian Boundary')
-district_line = mlines.Line2D([], [], color='black', linewidth=0.6, label='Bavarian Districts', alpha=0.7)
-ax.legend(handles=[bavaria_line, district_line], loc='lower right', fontsize=10, frameon=True)
-
-plt.tight_layout()
-
-# Save figure
-plt.savefig("median_NDVI_Bavaria.png", dpi=300)
-plt.show()
-```
 #### 2.4 Timelapse of NDVIs per year
 An animated timelapse GIF is created to visualize annual NDVI changes in Bavarian forests from 2013 to 2025. Each frame represents a single year, with forested areas colored according to NDVI values. The animation includes a colorbar and year labels, and the resulting GIF is saved for further use and displayed directly in the notebook.
 
