@@ -19,28 +19,23 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
 - [1. Data Preparation](#1-data-preparation)
   - [1.1 Import Required Libraries](#11-import-required-libraries)
   - [1.2 Create Linkage between Python notebook & GEE](#12-create-linkage-between-python-notebook--gee)
-
-
-### 1. Data Preparation 
-#### 1.1 Import Required Libraries 
-#### 1.2 Create Linkage between Python notebook & GEE 
-#### 1.3 Load Bavaria Boundary & Districts of Bavaria
-#### 1.4 Load Land Cover & Forest Mask
-#### 1.5 Load Landsat Collection & Apply Cloud Masking
-#### 1.6 Add NDVI Function
-### 2. Annual NDVI Composites
-#### 2.1 Create Yearly Composites
-#### 2.2 Create Maps of Annual NDVI Mean
-#### 2.3 Single Median NDVI Map (overall period)
-#### 2.4 Timelapse of NDVIs per year
-#### 2.5 Monthly NDVI Time Series
-##### 2.5.1 Extract monthly and annual NDVIs & convert to pandas dataframe
-##### 2.5.2 Plots Monthly NDVI with Annual Mean on top
-##### 2.5.3 Boxplots of monthly NDVIs
-### 3. Raster Statistics // Pixel-wise Trend Analysis
-#### 3.1 NDVI Linear Trend
-#### 3.2 Sen´s Slope Trend
-### 4. Methodology Description
+  - [1.3 Load Bavaria Boundary & Districts of Bavaria](#13-load-bavaria-boundary--districts-of-bavaria)
+  - [1.4 Load Land Cover & Forest Mask](#14-load-land-cover--forest-mask)
+  - [1.5 Load Landsat Collection & Apply Cloud Masking](#15-load-landsat-collection--apply-cloud-masking)
+  - [1.6 Add NDVI Function](#16-add-ndvi-function)
+- [2. Annual NDVI Composites](#2-annual-ndvi-composites)
+  - [2.1 Create Yearly Composites](#21-create-yearly-composites)
+  - [2.2 Create Maps of Annual NDVI Mean](#22-create-maps-of-annual-ndvi-mean)
+  - [2.3 Single Median NDVI Map (overall period)](#23-single-median-ndvi-map-overall-period)
+  - [2.4 Timelapse of NDVIs per year](#24-timelapse-of-ndvis-per-year)
+  - [2.5 Monthly NDVI Time Series](#25-monthly-ndvi-time-series)
+    - [2.5.1 Extract monthly and annual NDVIs & convert to pandas dataframe](#251-extract-monthly-and-annual-ndvis--convert-to-pandas-dataframe)
+    - [2.5.2 Plots Monthly NDVI with Annual Mean on top](#252-plots-monthly-ndvi-with-annual-mean-on-top)
+    - [2.5.3 Boxplots of monthly NDVIs](#253-boxplots-of-monthly-ndvis)
+- [3. Raster Statistics // Pixel-wise Trend Analysis](#3-raster-statistics--pixel-wise-trend-analysis)
+  - [3.1 NDVI Linear Trend](#31-ndvi-linear-trend)
+  - [3.2 Sen´s Slope Trend](#32-sens-slope-trend)
+- [4. Methodology Description](#4-methodology-description)
 
 ---
 
