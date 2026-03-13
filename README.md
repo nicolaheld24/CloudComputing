@@ -200,76 +200,9 @@ annualNDVI
 ```
 #### 2.2 Create Maps of Annual NDVI Mean
 Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid layout using Cartopy and matplotlib. Each subplot shows NDVI for a single year, with forest areas highlighted according to a defined color palette. Gridlines, titles, and a horizontal colorbar are added for clarity, and the final figure is saved as a high-resolution PNG.
-``` python
-# Set global font for all plots
-plt.rcParams['font.family'] = 'serif'
 
-# Define years for analysis
-years = list(range(2013, 2026))
-n_years = len(years)
+![Yearly Median NDVI in Bavarian Forests (2013–2025)](results/Annual_NDVI_Bavaria_maps_2013_2025.png)
 
-# Grid layout for subplots
-n_cols = 4
-n_rows = (n_years + n_cols - 1) // n_cols
-
-# Bounding box of Bavaria
-bavaria_region = [13.9, 47.2, 8.9, 50.6]
-
-# NDVI visualization parameters
-vis = {'min': 0, 'max': 0.6, 'palette': ['#440154','#414487','#2a788e','#22a884','#7ad151','#fde725']}
-
-# Create matplotlib figure with Cartopy projections
-fig, axes = plt.subplots(
-    n_rows, n_cols,
-    figsize=(5*n_cols, 5*n_rows),
-    subplot_kw={'projection': ccrs.PlateCarree()}
-)
-
-axes = axes.flatten()
-img_list = annualNDVI.toList(n_years)
-
-for i, year in enumerate(years):
-    img = ee.Image(img_list.get(i))
-    ax = axes[i]
-
-    # Add NDVI layer to subplot
-    cartoee.add_layer(
-        ax,
-        img.select('NDVI'),
-        region=bavaria_region,
-        dims=800,
-        vis_params=vis
-    )
-
-    ax.set_aspect(1.5)
-    gl = ax.gridlines(draw_labels=True)
-    gl.left_labels = True
-    gl.bottom_labels = True
-    gl.top_labels = False
-    gl.right_labels = False
-
-    ax.set_title(f"{year}", fontsize=12)
-
-for j in range(i+1, n_rows*n_cols):
-    fig.delaxes(axes[j])
-
-# Create a custom horizontal colorbar
-cax = fig.add_axes([0.3, 0.1, 0.4, 0.02])
-norm = plt.Normalize(vmin=vis['min'], vmax=vis['max'])
-sm = plt.cm.ScalarMappable(cmap='viridis', norm=norm)
-sm.set_array([])
-cbar = fig.colorbar(sm, cax=cax, orientation='horizontal', ticks=[0,0.1,0.2,0.3,0.4,0.5], extend='both')
-cbar.set_label("NDVI", fontsize=12)
-
-# Add main title and adjust layout
-plt.suptitle("Yearly Median NDVI in Bavarian Forests (2013–2025)", fontsize=18)
-plt.subplots_adjust(right=0.5, top=0.4, hspace=0.8, wspace=0.3)
-plt.tight_layout(rect=[0, 0, 0.98, 0.97])
-
-# Save figure
-plt.savefig("Annual_NDVI_Bavaria_maps_2013_2025.png", dpi=300)
-plt.show()
-```
 
 #### 2.3 Single Median NDVI Map (overall period)
 A median NDVI map for Bavarian forests (2013–2025) is created using the annual NDVI composites. Forested areas are visualized with a defined color palette, and both state and district boundaries are overlaid for reference. The map includes a vertical colorbar, north arrow, scale bar, gridlines, and a legend to clearly indicate Bavarian boundaries and districts. The figure is saved as a high-resolution PNG for further use.
