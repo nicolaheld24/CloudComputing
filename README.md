@@ -341,36 +341,8 @@ annual_df
 ##### 2.5.2 Plots Monthly NDVI with Annual Mean on top
 The plot shows the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
 
-``` python
-# Compute yearly mean and standard deviation from monthly NDVI data
-monthly_stats = monthly_df.groupby('year')['mean_NDVI'].agg(['mean','std']).reset_index()
+![Monthly & Annual NDVI Mean in Bavarian Forests (2013–2025)](results/monthly_ndvi_plot.png)
 
-plt.figure(figsize=(10,5))
-
-# Plot annual mean NDVI (blue line)
-plt.plot(annual_df['year'], annual_df['mean_NDVI'], marker='o', label='Annual Mean')
-
-# Add shaded area showing ±1 standard deviation of monthly NDVI (orange)
-plt.fill_between(
-    monthly_stats['year'],
-    monthly_stats['mean'] - monthly_stats['std'],
-    monthly_stats['mean'] + monthly_stats['std'],
-    color='orange',
-    alpha=0.3,
-    label='Monthly ±1 Std'
-)
-
-plt.xlabel("Year")
-plt.ylabel("Mean NDVI")
-plt.title("NDVI of Forests in Bavaria (2013–2025) with Monthly Variability")
-plt.grid(True)
-plt.xticks(annual_df['year'])
-plt.legend(loc='lower center')
-
-# Save figure
-plt.savefig("monthly_ndvi_plot.png", dpi=300)
-plt.show()
-```
 
 ##### 2.5.3 Boxplots of monthly NDVIs
 Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and spread of NDVI values for a single year, highlighting inter-annual variability and seasonal trends in forest greenness.
