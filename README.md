@@ -203,11 +203,17 @@ Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid
 
 ![Yearly Median NDVI in Bavarian Forests (2013–2025)](results/Annual_NDVI_Bavaria_maps_2013_2025.png)
 
+The figure shows the spatial distribution of annual median NDVI values in Bavarian forests from 2013 to 2025, representing vegetation density and health. Higher NDVI values (green, ~0.45–0.50) indicate denser and healthier forest vegetation, while lower values (yellow–brown, ~0.20–0.30) suggest sparser vegetation, stress, or more mixed land cover.
+It can be said that the spatial patterns remain relatively consistent, with higher NDVI values in northern and eastern forest regions and lower values in the Alpine areas due to elevation and sparser vegetation. A slight decline in NDVI is visible around 2018–2020, which may reflect the impact of severe drought conditions during those years. In the following years, NDVI values appear to partially recover, indicating a gradual stabilization of vegetation conditions.
+
 
 #### 2.3 Single Median NDVI Map (overall period)
 A median NDVI map for Bavarian forests (2013–2025) is created using the annual NDVI composites. Forested areas are visualized with a defined color palette, and both state and district boundaries are overlaid for reference. The map includes a vertical colorbar, north arrow, scale bar, gridlines, and a legend to clearly indicate Bavarian boundaries and districts. The figure is saved as a high-resolution PNG for further use.
 
 ![Median NDVI in Bavarian Forests (2013-2025)](results/median_NDVI_Bavaria.png)
+
+This map shows the median NDVI (Normalized Difference Vegetation Index) for forests in Bavaria between 2013 and 2025, which reflects overall vegetation health and density. 
+Overall, most forest areas fall in the moderate NDVI range (~0.30–0.40), indicating generally stable but not extremely dense vegetation. Higher NDVI clusters appear mainly in the northern and north-western parts, suggesting more vigorous forest growth there. In contrast, lower NDVI patches in eastern and some southern regions may reflect factors such as drought stress, forest disturbance (e.g., bark beetle damage), or different forest composition during the 2013–2025 period.
 
 
 #### 2.4 Timelapse of NDVIs per year
