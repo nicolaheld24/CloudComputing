@@ -25,7 +25,7 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
   - [1.6 Add NDVI Function](#16-add-ndvi-function)
 - [2. Annual NDVI Composites](#2-annual-ndvi-composites)
   - [2.1 Create Yearly Composites](#21-create-yearly-composites)
-  - [2.2 Create Maps of Annual NDVI Mean](#22-create-maps-of-annual-ndvi-mean)
+  - [2.2 Maps of Annual NDVI Mean](#22-maps-of-annual-ndvi-mean)
   - [2.3 Single Median NDVI Map (overall period)](#23-single-median-ndvi-map-overall-period)
   - [2.4 Timelapse of NDVIs per year](#24-timelapse-of-ndvis-per-year)
   - [2.5 Monthly NDVI Time Series](#25-monthly-ndvi-time-series)
@@ -198,7 +198,7 @@ annualNDVI = ee.ImageCollection.fromImages([create_annual_composite(y) for y in 
 
 annualNDVI
 ```
-#### 2.2 Create Maps of Annual NDVI Mean
+#### 2.2 Maps of Annual NDVI Mean
 Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid layout using Cartopy and matplotlib. Each subplot shows NDVI for a single year, with forest areas highlighted according to a defined color palette. Gridlines, titles, and a horizontal colorbar are added for clarity, and the final figure is saved as a high-resolution PNG.
 
 ![Yearly Median NDVI in Bavarian Forests (2013–2025)](results/Annual_NDVI_Bavaria_maps_2013_2025.png)
