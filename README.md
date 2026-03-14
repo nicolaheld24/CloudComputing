@@ -352,9 +352,11 @@ This figure shows that the annual mean NDVI stays fairly stable between about 0.
 The shaded band is shaped by seasonal fluctuations in vegetation greenness, showing that NDVI varies within each year as forests transition between dormant and peak growing seasons.
 
 ##### 2.5.3 Boxplots of monthly NDVIs
-Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and spread of NDVI values for a single year, highlighting inter-annual variability and seasonal trends in forest greenness.
+Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and distribution of NDVI values for a single year, where the central line represents the median, the box indicates the interquartile range (IQR), and the whiskers show the broader range of observed values.
 
 ![Monthly NDVI Boxplots in Bavarian Forests (2013–2025)](results/monthly_boxplots_ndvi_bavaria_forests.png)
+
+In the figure, the medians generally lie between approximately 0.31 and 0.35, suggesting relatively consistent vegetation greenness across the study period. Slightly lower median values are visible in the mid-2010s, while more recent years, particularly 2023–2025, exhibit somewhat higher medians, indicating moderately improved vegetation conditions during the growing season. The spread of the boxplots illustrates inter-month variability within each growing season. Several years show wider ranges and lower whisker values, implying occasional months with reduced NDVI, which may be associated with short-term environmental stress, phenological differences, or spatial heterogeneity in forest conditions.
 
 
 ### 3. Raster Statistics // Pixel-wise Trend Analysis
