@@ -30,7 +30,7 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
   - [2.4 Timelapse of NDVIs per year](#24-timelapse-of-ndvis-per-year)
   - [2.5 Monthly NDVI Time Series](#25-monthly-ndvi-time-series)
     - [2.5.1 Extract monthly and annual NDVIs & convert to pandas dataframe](#251-extract-monthly-and-annual-ndvis--convert-to-pandas-dataframe)
-    - [2.5.2 Plots Monthly NDVI with Annual Mean on top](#252-plots-monthly-ndvi-with-annual-mean-on-top)
+    - [2.5.2 Plots of Monthly NDVI with Annual Mean on top](#252-plots-of-monthly-ndvi-with-annual-mean-on-top)
     - [2.5.3 Boxplots of monthly NDVIs](#253-boxplots-of-monthly-ndvis)
 - [3. Raster Statistics // Pixel-wise Trend Analysis](#3-raster-statistics--pixel-wise-trend-analysis)
   - [3.1 NDVI Linear Trend](#31-ndvi-linear-trend)
@@ -343,7 +343,7 @@ date = meanNDVI.aggregate_array('year').getInfo()
 annual_df = geemap.ee_to_df(ee.FeatureCollection(meanNDVI))
 annual_df
 ```
-##### 2.5.2 Plots Monthly NDVI with Annual Mean on top
+##### 2.5.2 Plots of Monthly NDVI with Annual Mean on top
 The plot shows the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
 
 ![Monthly & Annual NDVI Mean in Bavarian Forests (2013–2025)](results/monthly_ndvi_plot.png)
