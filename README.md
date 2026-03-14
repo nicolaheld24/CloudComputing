@@ -344,12 +344,12 @@ annual_df = geemap.ee_to_df(ee.FeatureCollection(meanNDVI))
 annual_df
 ```
 ##### 2.5.2 Plots of Monthly NDVI with Annual Mean on top
-The plot shows the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
+The following plot illustrates the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
 
 ![Monthly & Annual NDVI Mean in Bavarian Forests (2013–2025)](results/monthly_ndvi_plot.png)
 
-This plot shows that the annual mean NDVI stays fairly stable between about 0.31 and 0.34, indicating relatively consistent forest vegetation conditions during the study period. Lower values appear around 2015 and 2018, which may reflect temporary stress events such as drought or disturbance. After 2019, the values gradually increase, reaching some of the highest levels around 2023–2025.
-The shaded band illustrates seasonal fluctuations in vegetation greenness, showing that NDVI varies within each year as forests transition between dormant and peak growing seasons.
+This figure shows that the annual mean NDVI stays fairly stable between about 0.31 and 0.34, indicating relatively consistent forest vegetation conditions during the study period. Lower values appear around 2015 and 2018, which may reflect temporary stress events such as drought or disturbance. After 2019, the values gradually increase, reaching some of the highest levels around 2023–2025.
+The shaded band is shaped by seasonal fluctuations in vegetation greenness, showing that NDVI varies within each year as forests transition between dormant and peak growing seasons.
 
 ##### 2.5.3 Boxplots of monthly NDVIs
 Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and spread of NDVI values for a single year, highlighting inter-annual variability and seasonal trends in forest greenness.
