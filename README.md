@@ -436,7 +436,9 @@ Overall, the map shows a heterogeneous spatial pattern of NDVI trends across Bav
 
 ### 4. Methodology Description
 
+The NDVI trend analysis was conducted using pixel-wise Sen’s slope estimation based on annual NDVI composites from 2013 to 2025. Sen’s slope is a robust non-parametric estimator of linear trends, but it assumes a monotonic change and therefore may not fully capture complex or non-linear vegetation dynamics. The calculated slopes represent the direction and magnitude of NDVI change, but they do not indicate statistical significance without additional tests (e.g., Mann–Kendall).
 
+Furthermore, NDVI is influenced by sensor characteristics, atmospheric conditions, and vegetation density, and may saturate in dense forest areas. The analysis is also limited by the spatial resolution of the satellite imagery, where each pixel represents aggregated vegetation conditions rather than individual forest stands. Consequently, the results should be interpreted as general spatial indicators of vegetation change rather than precise measures of forest condition or causal drivers.
 
 
 
