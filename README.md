@@ -426,13 +426,12 @@ Map.addLayer(
 # Display interactive map
 Map
 ```
-Annual mean NDVI values for Bavarian forests (2013–2025) are plotted to visualize trends derived from Sen’s Slope analysis. The line plot shows yearly forest greenness, highlighting increases or decreases over the study period, with markers at each year and a grid for readability. The figure is saved as a high-resolution PNG for further use.
 
-
-![Pixel-wise Sen´s Slope Plot of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_bavaria_forest_plot.png)
+In a last step, a map was generated to display the pixel-wise Sen’s slope of annual NDVI values across forested areas in Bavaria. This analysis shows the annual rate of change in vegetation greenness between 2013 and 2025. The color scale ranges from −0.002 to +0.002 NDVI units per year, where brown tones indicate decreasing NDVI, yellow indicates relatively stable conditions, and green tones indicate increasing NDVI.
 
 ![Pixel-wise Sen´s Slope Map of NDVI in Bavarian Forests (2013–2025)](results/sen_slope_bavaria_forest_map.png)
 
+Overall, the map shows a heterogeneous spatial pattern of NDVI trends across Bavaria. Many forested areas exhibit near-stable to slightly positive trends (yellow to light green), suggesting relatively stable vegetation conditions or moderate increases in greenness. Clusters of stronger positive trends (darker green) are visible particularly in parts of southern and eastern Bavaria, indicating localized increases in vegetation productivity or recovery. In contrast, scattered patches of negative trends (brown) occur throughout the region, with some concentrations in northern and central areas, which may reflect localized vegetation decline or disturbance effects.
 
 
 ### 4. Methodology Description
