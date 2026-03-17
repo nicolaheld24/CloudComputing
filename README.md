@@ -328,7 +328,7 @@ monthly_df = geemap.ee_to_df(ee.FeatureCollection(monthly_features))
 
 monthly_df
 ```
-Mean NDVI values for Bavarian forests are computed for each year from 2013 to 2025. The function calculates the average NDVI across all forest pixels for each annual composite, stores the year and mean NDVI, and the results are converted into a Pandas DataFrame for statistical analysis or plotting trends over time.
+Similarly, annual mean NDVI values for Bavarian forests are calculated for each year from 2013 to 2025. The function computes the average NDVI across all forest pixels for each annual composite, stores the year and mean NDVI, and converts the results into a Pandas DataFrame. This structured format allows for easy trend analysis, visualization, and statistical evaluation over time.
 
 ``` python
 # Extract Annual Mean NDVI for Bavarian Forests
