@@ -44,8 +44,8 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
 
 ---
 
-# 1. Data Preparation 
-#### 1.1 Import Required Libraries 
+## 1. Data Preparation 
+### 1.1 Import Required Libraries 
 ```python
 # Install necessary packages (run in Colab if not already installed)
 !pip install xee
@@ -71,14 +71,14 @@ import seaborn as sns
 ``` 
 These imports load Python libraries for geospatial analysis, data processing, visualization, and mapping. ee and geemap provide access to Google Earth Engine; numpy, pandas, and xarray are used for data handling; matplotlib, seaborn, and cartopy are used for plotting and mapping
 
-#### 1.2 Create Linkage between Python notebook & GEE 
+### 1.2 Create Linkage between Python notebook & GEE 
 ``` python
 ee.Authenticate()
 ee.Initialize(project="propane-tribute-464707-b2")  # link Python notebook to your GEE project
 ```
 This code authenticates your Google Earth Engine (GEE) account and initializes a session, linking the Python notebook to your specific GEE project. It is required before accessing datasets or performing analyses on GEE.
 
-#### 1.3 Load Bavaria Boundary & Districts of Bavaria
+### 1.3 Load Bavaria Boundary & Districts of Bavaria
 In a next step, administrative boundaries for Germany are loaded from the FAO GAUL 2015 dataset, and Bavaria is extracted at both the state (ADM1) and district (ADM2) levels. An interactive map is generated using geemap, displaying Bavaria’s boundaries over a hybrid satellite basemap to provide a visual reference for the study area.
 ``` python
 # Load Germany administrative boundaries (Level 1 = states/provinces)
@@ -120,7 +120,7 @@ bavaria_gdf = geemap.ee_to_gdf(bavaria)
 districts_gdf = geemap.ee_to_gdf(bavaria_districts)
 ```
 
-#### 1.4 Load Land Cover & Forest Mask
+### 1.4 Load Land Cover & Forest Mask
 Forest pixels (class 10) are extracted from the ESA WorldCover 2021 dataset and clipped to the extent of Bavaria. Non-forest areas are masked, and the resulting forest layer is added to the interactive map for visualization.
 
 ``` python
@@ -135,7 +135,7 @@ Map.addLayer(forest, {'palette': 'green'}, 'Forest areas')
 ```
 
 
-#### 1.5 Load Landsat Collection & Apply Cloud Masking
+### 1.5 Load Landsat Collection & Apply Cloud Masking
 Cloudy or non-clear pixels are removed from Landsat images by using the QA_PIXEL band. Bit 6 indicates clear pixels, and the function creates a mask to retain only these pixels, improving the quality of the NDVI time-series analysis.
 ``` python
 # Function to mask out cloudy or non-clear pixels using the QA_PIXEL band
@@ -158,7 +158,7 @@ landsat = (ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
            .map(mask_landsat))
 ```
 
-#### 1.6 Add NDVI Function
+### 1.6 Add NDVI Function
 NDVI (Normalized Difference Vegetation Index) is computed for each Landsat 8 image using the near-infrared (SR_B5) and red (SR_B4) bands. The resulting NDVI is added as a new band to the image, enabling further analysis of vegetation trends across Bavaria.
 ``` python
 # Function to calculate NDVI from Landsat Surface Reflectance bands
@@ -167,9 +167,11 @@ def calcNDVI(image):
     return image.addBands(ndvi)  # Add NDVI as a new band to the image
 ```
 
-### 2. Annual NDVI Composites
-#### 2.1 Create Yearly Composites
+## 2. Annual NDVI Composites
+### 2.1 Create Yearly Composites
+#### 2.1.1 Function of Composites 
 Here, annual NDVI composites are generated for each year from 2013 to 2025 using the growing season (April–October). For each year, NDVI is computed from the filtered Landsat 8 images, median values are taken, non-forest pixels are masked, and the result is clipped to Bavaria. A time band is added to each image to facilitate pixel-wise trend analysis, and all yearly composites are combined into a single ImageCollection.
+
 ``` python
 # List of years for analysis (2013–2025)
 years = list(range(2013, 2026))  # 2025 is included
@@ -203,7 +205,36 @@ annualNDVI = ee.ImageCollection.fromImages([create_annual_composite(y) for y in 
 
 annualNDVI
 ```
-#### 2.2 Maps of Annual NDVI Mean
+#### 2.1.2 Optional Download of Annual NDVIs // Export to Google Drive
+With the following code, you can download, for example, the median NDVI of 2013-2025 and export the image as a GeoTIFF to visualize it in QGIS or other programmes. 
+
+``` python
+# Optional Download Median of 2013-2025 
+
+# Create overall median NDVI image (2013–2025)
+# → reduces the ImageCollection to ONE image (pixel-wise median over all years)
+median_all = annualNDVI.select('NDVI').median().clip(bavaria)
+
+# Start Export to Google Drive
+task_median = ee.batch.Export.image.toDrive(
+    image=median_all,
+    description='NDVI_Median_2013_2025',
+    folder='GEE_exports',
+    fileNamePrefix='NDVI_Median_2013_2025',
+    region=bavaria.geometry(),
+    scale=30,
+    crs='EPSG:25832',  # coordinate system (WGS84)
+    maxPixels=1e13
+)
+
+task_median.start()
+
+print("Check this website to see GEE Task Manager: https://code.earthengine.google.com/tasks")
+```
+
+
+
+### 2.2 Maps of Annual NDVI Mean
 Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid layout using Cartopy and matplotlib. Each subplot shows NDVI for a single year, with forest areas highlighted according to a defined color palette. Gridlines, titles, and a horizontal colorbar are added for clarity, and the final figure is saved as a high-resolution PNG.
 
 ![Yearly Median NDVI in Bavarian Forests (2013–2025)](results/Annual_NDVI_Bavaria_maps_2013_2025.png)
@@ -212,7 +243,7 @@ The figure shows the spatial distribution of annual median NDVI values in Bavari
 It can be said that the spatial patterns remain relatively consistent, with higher NDVI values in northern and eastern forest regions and lower values in the Alpine areas due to elevation and sparser vegetation. A slight decline in NDVI is visible around 2018–2020, which may reflect the impact of severe drought conditions during those years. In the following years, NDVI values appear to partially recover, indicating a gradual stabilization of vegetation conditions.
 
 
-#### 2.3 Single Median NDVI Map (overall period)
+### 2.3 Single Median NDVI Map (overall period)
 A median NDVI map for Bavarian forests (2013–2025) is created using the annual NDVI composites. Forested areas are visualized with a defined color palette, and both state and district boundaries are overlaid for reference. The map includes a vertical colorbar, north arrow, scale bar, gridlines, and a legend to clearly indicate Bavarian boundaries and districts. The figure is saved as a high-resolution PNG for further use.
 
 ![Median NDVI in Bavarian Forests (2013-2025)](results/median_NDVI_Bavaria.png)
@@ -221,47 +252,9 @@ This map shows the median NDVI (Normalized Difference Vegetation Index) for fore
 Overall, most forest areas fall in the moderate NDVI range (~0.30–0.40), indicating generally stable but not extremely dense vegetation. Higher NDVI clusters appear mainly in the northern and north-western parts, suggesting more vigorous forest growth there. In contrast, lower NDVI patches in eastern and some southern regions may reflect factors such as drought stress, forest disturbance (e.g., bark beetle damage), or different forest composition during the 2013–2025 period.
 
 
-#### 2.4 Timelapse of NDVIs per year
-An animated timelapse GIF is created to visualize annual NDVI changes in Bavarian forests from 2013 to 2025. Each frame represents a single year, with forested areas colored according to NDVI values. The animation includes a colorbar and year labels, and the resulting GIF is saved for further use and displayed directly in the notebook.
 
-``` python
-# Generate NDVI timelapse GIF for Bavarian forests
-
-# Output directory and GIF filename
-out_dir = "timelapse"
-out_gif = "NDVI_Bavaria_forest.gif"
-
-bavaria_region = [13.9, 47.2, 8.9, 50.6]  # Bounding box for Bavaria
-
-# Visualization parameters for NDVI values
-vis_params = {"palette": ['brown', 'yellow', 'green'], "min": 0, "max": 0.5}
-
-# Create animated timelapse of annual NDVI
-cartoee.get_image_collection_gif(
-    ee_ic=annualNDVI.select('NDVI'),
-    out_dir=out_dir,
-    out_gif=out_gif,
-    vis_params=vis_params,
-    region=bavaria_region,
-    aspect=1.5,
-    fps=3,
-    grid_interval=(1, 1),
-    plot_title="NDVI - ",
-    date_format='YYYY',
-    fig_size=(10, 8),
-    dpi_plot=300,
-    file_format="jpg",
-    plot_colorbar=True,
-    colorbar_label="NDVI",
-    verbose=True,
-)
-
-# Display the generated GIF
-geemap.show_image(f'{out_dir}/{out_gif}')
-```
-
-#### 2.5 Monthly NDVI Time Series
-##### 2.5.1 Extract monthly and annual NDVIs & convert to pandas dataframe
+### 2.4 Monthly NDVI Time Series
+#### 2.4.1 Extract monthly and annual NDVIs for plotting
 Monthly NDVI composites are generated for the growing season (April–October) from 2013 to 2025. For each month, NDVI is computed from Landsat 8 images, median values are calculated, non-forest pixels are masked, and the result is clipped to Bavaria. A time band is added to each image, and all monthly composites are combined into a single ImageCollection for further analysis or visualization.
 
 ``` python
@@ -348,7 +341,7 @@ date = meanNDVI.aggregate_array('year').getInfo()
 annual_df = geemap.ee_to_df(ee.FeatureCollection(meanNDVI))
 annual_df
 ```
-##### 2.5.2 Plots of Monthly NDVI with Annual Mean on top
+#### 2.4.2 Plots of Monthly NDVI with Annual Mean on top
 The following plot illustrates the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
 
 ![Monthly & Annual NDVI Mean in Bavarian Forests (2013–2025)](results/monthly_ndvi_plot.png)
