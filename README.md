@@ -48,12 +48,9 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
 ### 1.1 Import Required Libraries 
 ```python
 # Install necessary packages (run in Colab if not already installed)
-!pip install xee
 !pip install cartopy
-!pip install rioxarray
-!pip install geodatasets matplotlib_scalebar 
 ``` 
-These packages are required to access Google Earth Engine (xee, geemap), handle geospatial data (rioxarray, cartopy, geodatasets), and create plots (matplotlib, seaborn).
+These packages are required to access Google Earth Engine and handle geospatial data (f.e, cartopy, geodatasets).
 
 ```python
 import ee
@@ -64,7 +61,7 @@ import pandas as pd
 import xarray as xr
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.lines as mlines
+import matplotlib.lines as mlines # Import mpatches for custom legend handles
 import cartopy.crs as ccrs
 from cartopy.mpl.geoaxes import GeoAxes
 import seaborn as sns
@@ -74,7 +71,7 @@ These imports load Python libraries for geospatial analysis, data processing, vi
 ### 1.2 Create Linkage between Python notebook & GEE 
 ``` python
 ee.Authenticate()
-ee.Initialize(project="propane-tribute-464707-b2")  # link Python notebook to your GEE project
+ee.Initialize(project="link-to-your-project")  # link Python notebook to your GEE project
 ```
 This code authenticates your Google Earth Engine (GEE) account and initializes a session, linking the Python notebook to your specific GEE project. It is required before accessing datasets or performing analyses on GEE.
 
