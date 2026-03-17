@@ -375,7 +375,7 @@ The shaded band is shaped by seasonal fluctuations in vegetation greenness, show
 
 
 
-##### 2.4.3 Boxplots of monthly NDVIs
+#### 2.4.3 Boxplots of monthly NDVIs
 Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and distribution of NDVI values for a single year, where the central line represents the median, the box indicates the interquartile range (IQR), and the whiskers show the broader range of observed values.
 
 ![Monthly NDVI Boxplots in Bavarian Forests (2013–2025)](results/monthly_boxplots_ndvi_bavaria_forests.png)
@@ -383,8 +383,9 @@ Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) a
 In the figure, the medians generally lie between approximately 0.31 and 0.35, suggesting relatively consistent vegetation greenness across the study period. Slightly lower median values are visible in the mid-2010s, while more recent years, particularly 2023–2025, exhibit somewhat higher medians, indicating moderately improved vegetation conditions during the growing season. The spread of the boxplots illustrates inter-month variability within each growing season. Several years show wider ranges and lower whisker values, implying occasional months with reduced NDVI, which may be associated with short-term environmental stress, phenological differences, or spatial heterogeneity in forest conditions.
 
 
-### 3. Raster Statistics // Pixel-wise Trend Analysis
-#### 3.1 NDVI Linear Trend
+## 3. Raster Statistics // Pixel-wise Trend Analysis
+### 3.1 NDVI Linear Trend
+#### 3.1.1 Calculation of Linear Trend
 Pixel-wise linear trends of NDVI are calculated across Bavaria using the annual NDVI composites. The slope (scale) represents the yearly change in NDVI for each pixel, while the intercept (offset) shows the NDVI at the start of the time series. The resulting trend map is added to the interactive map, with brown indicating decreasing NDVI, yellow stable values, and green increasing NDVI over the period 2013–2025.
 
 ``` python
@@ -409,6 +410,32 @@ Map.addLayer(
     "NDVI Linear Trend"
 )
 ```
+
+
+#### 3.1.2 Export to Google Drive & visualize as Map 
+With the following code, you can download the image as a GeoTIFF. 
+``` python
+# Select the 'scale' band (slope) for export
+ndvi_trend_slope = lintrend.select('scale')
+
+# Start export task to Google Drive
+task = ee.batch.Export.image.toDrive(
+    image=ndvi_trend_slope,
+    description='NDVI_Trend_Bavaria',
+    folder='GEE_exports',          # Drive folder
+    fileNamePrefix='NDVI_Trend_Bavaria',
+    region=bavaria.geometry(),     # export region
+    scale=30,                      # match Landsat resolution
+    crs='EPSG:25832',              # UTM Zone 32N for Bavaria
+    maxPixels=1e13,
+    fileFormat='GeoTIFF'
+)
+
+# Start the export
+task.start()
+print("Check this website to see GEE Task Manager: https://code.earthengine.google.com/tasks")
+```
+
 A pixel-wise NDVI linear trend map is created for Bavarian forests (2013–2025) using the annual NDVI composites. Trends were calculated using a linear regression of NDVI over time, where the slope (scale) represents the annual change in NDVI per pixel. Positive values (green tones) indicate increasing vegetation greenness, while negative values (orange tones) indicate declining NDVI. State and district boundaries are overlaid for reference. The map includes a colorbar, north arrow, scale bar, gridlines, and a legend, and is saved as a high-resolution PNG.
 
 
@@ -417,7 +444,9 @@ A pixel-wise NDVI linear trend map is created for Bavarian forests (2013–2025)
 The spatial pattern indicates that most forested areas in Bavaria exhibit slightly positive NDVI trends, suggesting generally stable to moderately increasing vegetation greenness during the study period. However, localized areas with negative trends are also visible, indicating potential declines in vegetation greenness in some forest regions.
 
 
-#### 3.2 Sen´s Slope Trend
+
+### 3.2 Sen´s Slope Trend
+#### 3.2.1 Calculation of Sen´s Slope Trend
 Sen’s Slope, a non-parametric method for linear trend detection, is calculated pixel-wise for Bavarian forests. The annual NDVI collection is reordered so that the first band represents time, and the second NDVI values. The resulting slope map highlights yearly NDVI changes, with brown indicating decreasing forest greenness, yellow stable trends, and green increasing NDVI. The map is added to the interactive viewer for exploration.
 
 ``` python
@@ -450,6 +479,32 @@ Map.addLayer(
 # Display interactive map
 Map
 ```
+
+#### 3.2.2 Export to Google Drive & visualize as Map 
+The following code exports the image again to Google Drive: 
+``` python
+# Select the 'slope' band from the Sen's Slope result
+ndvi_sens_slope = sens.select('slope')
+
+# Start the export task to Google Drive
+task_sens = ee.batch.Export.image.toDrive(
+    image=ndvi_sens_slope,             # the slope band only
+    description='SenS_NDVI_Bavaria',   # task name in GEE
+    folder='GEE_exports',              # Google Drive folder
+    fileNamePrefix='SenS_NDVI_Bavaria',
+    region=bavaria.geometry(),         # export region (Bavaria)
+    scale=30,                          # Landsat pixel resolution in meters
+    crs='EPSG:25832',                  # UTM Zone 32N, good for Bavaria
+    maxPixels=1e13,                     # allow large exports
+    fileFormat='GeoTIFF'               # export format
+)
+
+# Start the export
+task_sens.start()
+
+print("Check this website to see GEE Task Manager: https://code.earthengine.google.com/tasks")
+```
+
 
 In a last step, a map was generated to display the pixel-wise Sen’s slope of annual NDVI values across forested areas in Bavaria. This analysis shows the annual rate of change in vegetation greenness between 2013 and 2025. The color scale ranges from −0.002 to +0.002 NDVI units per year, where brown tones indicate decreasing NDVI, yellow indicates relatively stable conditions, and green tones indicate increasing NDVI.
 
