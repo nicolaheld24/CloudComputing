@@ -512,9 +512,14 @@ Overall, the map shows a heterogeneous spatial pattern of NDVI trends across Bav
 
 ### 4. Methodology Description
 
-The NDVI trend analysis was conducted using pixel-wise Sen’s slope estimation based on annual NDVI composites from 2013 to 2025. Sen’s slope is a robust non-parametric estimator of linear trends, but it assumes a monotonic change and therefore may not fully capture complex or non-linear vegetation dynamics. The calculated slopes represent the direction and magnitude of NDVI change, but they do not indicate statistical significance without additional tests (e.g., Mann–Kendall).
+This study analyzed forested areas in Bavaria, Germany using Landsat 8 imagery from 2013–2025. The NDVI was calculated for each image, and median annual composites were created to reduce noise and highlight forest greenness. Monthly NDVI time series were also extracted to study seasonal dynamics.
+Given the relatively short study period, the observed trends reflect short-term changes rather than fundamental shifts in forest vegetation. NDVI maps and trend results were exported for visualization and further analysis in GIS platforms.
+The analysis is also limited by the spatial resolution of the satellite imagery, where each pixel represents aggregated vegetation conditions rather than individual forest stands. Consequently, the results should be interpreted as general spatial indicators of vegetation change rather than precise measures of forest condition or causal drivers.
 
-Furthermore, NDVI is influenced by sensor characteristics, atmospheric conditions, and vegetation density, and may saturate in dense forest areas. The analysis is also limited by the spatial resolution of the satellite imagery, where each pixel represents aggregated vegetation conditions rather than individual forest stands. Consequently, the results should be interpreted as general spatial indicators of vegetation change rather than precise measures of forest condition or causal drivers.
+Pixel-wise trends were assessed using linear regression and Sen’s Slope, a robust non-parametric method less sensitive to outliers. Both methods provide slope maps indicating areas of increasing, stable, or decreasing NDVI.
+The linear trend map shows a similar overall pattern but is smoother and less sensitive to localized changes. On the other hand, Sen’s Slope reveals a heterogeneous NDVI trend across Bavaria, with many forested areas stable or slightly increasing, stronger positive trends in southern/eastern regions, and scattered negative patches in the north and center.
+Overall, Bavarian forests between 2013 to 2025 have proven to be mostly stable to moderately greening, with some areas of decline.
+
 
 
 
