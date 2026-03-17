@@ -27,7 +27,7 @@ The study area encompasses Bavaria, a federal state in southeastern Germany, inc
   - [2.1 Create Yearly Composites](#21-create-yearly-composites)
     - [2.1.1 Function of Composites](#211-function-of-composites)
     - [2.1.2 Optional Download of Annual NDVIs // Export to Google Drive](#212-optional-download-of-annual-NDVIs--export-to-google-drive)
-  - [2.2 Grid of Maps with Annual NDVI Mean (2013–2025)](#22-grid-of-maps-with-annual-ndvi-mean-2013-2025)
+  - [2.2 Grid of Maps with Annual NDVI Median (2013–2025)](#22-grid-of-maps-with-annual-ndvi-median-2013-2025)
   - [2.3 Single Median NDVI Map (overall period)](#23-single-median-ndvi-map-overall-period)
   - [2.4 Monthly NDVI Time Series](#24-monthly-ndvi-time-series)
     - [2.4.1 Extract monthly and annual NDVIs for plotting](#241-extract-monthly-and-annual-ndvis-for-plotting)
