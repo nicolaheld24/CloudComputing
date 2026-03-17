@@ -219,7 +219,7 @@ task_median = ee.batch.Export.image.toDrive(
     folder='GEE_exports',
     fileNamePrefix='NDVI_Median_2013_2025',
     region=bavaria.geometry(),
-    scale=30,
+    scale=30,          # spatial resolution can be changed for faster download
     crs='EPSG:25832',  # coordinate system (WGS84)
     maxPixels=1e13
 )
