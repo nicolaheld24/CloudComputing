@@ -258,35 +258,45 @@ Overall, most forest areas fall in the moderate NDVI range (~0.30–0.40), indic
 Monthly NDVI composites are generated for the growing season (April–October) from 2013 to 2025. For each month, NDVI is computed from Landsat 8 images, median values are calculated, non-forest pixels are masked, and the result is clipped to Bavaria. A time band is added to each image, and all monthly composites are combined into a single ImageCollection for further analysis or visualization.
 
 ``` python
-# List of months for analysis (April–October)
-months = list(range(4, 11))
+# List of months for the growing season (April = 4 to October = 10)
+months = list(range(4, 11))  # Python range is exclusive at the end → 11 ensures October is included
 
-# Function to create monthly NDVI composite for a given year and month
+# Function to create a monthly NDVI composite for a given year and month
 def create_monthly_composite(year, month):
-    start = ee.Date.fromYMD(year, month, 1)
-    end = start.advance(1, 'month').advance(-1, 'day')  # handle varying month lengths
+  # Define start date (first day of the month)
+  start = ee.Date.fromYMD(year, month,1)
+  # Define end date (last day of the month)
+  # → advance 1 month, then go back 1 day to handle variable month lengths
+  end = start.advance(1, 'month').advance(-1, 'day') # not every month ends with 30 days
 
-    monthly = (landsat
-               .filterDate(start, end)
-               .map(calcNDVI)
-               .select('NDVI'))
+  # Filter Landsat images for this specific month and compute NDVI
+  monthly = (landsat
+        .filterDate(start, end)
+        .map(calcNDVI)
+        .select('NDVI'))
+  
+  # Create a monthly composite image
+  composite = (monthly.median()     # pixel-wise median → removes clouds/outliers
+        .updateMask(forest)         # keeps only pixels of forest // masks out other pixels
+        .clip(bavaria)    
+        .set('year', year)          # store year as metadata
+        .set('month', month)        # store month as metadata
+        .set('system:time_start', start.millis())) # set timestamp (needed for time series)
 
-    composite = (monthly.median()
-                 .updateMask(forest)  # retain only forest pixels
-                 .clip(bavaria)
-                 .set('year', year)
-                 .set('month', month)
-                 .set('system:time_start', start.millis()))
+  timeBand = ee.Image.constant(year + (month-1)/12).toFloat().rename('time')
 
-    # Add a 'time' band for trend analysis
-    timeBand = ee.Image.constant(year + (month-1)/12).toFloat().rename('time')
+  # Return the composite image with the additional time band
+  return composite.addBands(timeBand)
 
-    return composite.addBands(timeBand)
-
-# Combine all monthly composites into a single ImageCollection
+# Create an ImageCollection containing all monthly composites
+# → loops over all years AND all months
 monthly_NDVI = ee.ImageCollection.fromImages(
     [create_monthly_composite(y, m) for y in years for m in months]
 )
+
+# Result = ImageCollection where each image represents
+# - one month (April–October) & one year (e.g., 2013–2025)
+# - containing: NDVI band (median composite) // time band (fractional year) // metadata (year, month)
 
 monthly_NDVI
 ```
@@ -294,54 +304,68 @@ monthly_NDVI
 Mean NDVI values are computed for each month across Bavaria using the monthly composites. The results are extracted as features containing the year, month, and mean NDVI, then converted to a Pandas DataFrame for further analysis, plotting, or statistical evaluation.
 
 ``` python
-# Function to extract mean NDVI for Bavaria from each monthly composite
+# Function to extract a single NDVI value (mean) from each monthly image
 def extract_monthly_ndvi(image):
-    stats = image.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=bavaria,
-        scale=100,
-        maxPixels=1e13
-    )
-    return ee.Feature(None, {
-        'year': image.get('year'),
-        'month': image.get('month'),
-        'mean_NDVI': stats.get('NDVI')
-    })
+  # Reduce the image (many pixels) to a single value over Bavaria
+  stats = image.reduceRegion(
+      reducer = ee.Reducer.mean(),    # calculate average NDVI across all forest pixels
+      geometry = bavaria,
+      scale = 30,                     # Landsat spatial resolution (30 m)
+      maxPixels = 1e13                # allow processing of large areas
+  )
 
-# Apply the function to all monthly composites
+  # Convert the result into a Feature (i.e., one row in a table)
+  return ee.Feature(None, {
+      'year': image.get('year'),
+      'month': image.get('month'),
+      'mean_NDVI': stats.get('NDVI')  # extracted mean NDVI value
+  })
+
+# Apply the extraction function to every image in the collection
+# → transforms ImageCollection (images) into FeatureCollection (table-like structure)
 monthly_features = monthly_NDVI.map(extract_monthly_ndvi)
 
-# Convert results to a Pandas DataFrame for analysis
+# Convert FeatureCollection to a pandas DataFrame
+# → brings data from Earth Engine (server-side) to local environment (client-side)
 monthly_df = geemap.ee_to_df(ee.FeatureCollection(monthly_features))
+
+monthly_df
 ```
 Mean NDVI values for Bavarian forests are computed for each year from 2013 to 2025. The function calculates the average NDVI across all forest pixels for each annual composite, stores the year and mean NDVI, and the results are converted into a Pandas DataFrame for statistical analysis or plotting trends over time.
 
 ``` python
-# Function to extract mean NDVI for Bavaria from each annual composite
+# Extract Annual Mean NDVI for Bavarian Forests
+# Compute mean NDVI for the whole Bavaria forest area for a single year.
+# Returns an ee.Feature with 'year' and 'mean_NDVI' attributes.
 def extract_ndvi(image):
-    stats = image.reduceRegion(
-        reducer=ee.Reducer.mean(),      # Compute mean NDVI across all pixels
-        geometry=bavaria,
-        scale=100,                      # Spatial resolution in meters
-        maxPixels=1e13                  # Allow processing of large datasets
-    )
-    return ee.Feature(None, {
-        'year': image.get('year'),      # Store year of composite
-        'mean_NDVI': stats.get('NDVI')  # Store mean NDVI
-    })
+  stats = image.reduceRegion(
+      reducer = ee.Reducer.mean(),      # Compute mean NDVI across all pixels
+      geometry = bavaria,
+      scale = 30,                       # Spatial resolution in meters
+      maxPixels = 1e13                  # Allow processing of large datasets
+  )
+  return ee.Feature(None, {
+      'year': image.get('year'),        # Store year of composite
+      'mean_NDVI': stats.get('NDVI')    # Store mean NDVI
+  })
 
-# Apply the function to all annual NDVI composites
+# Apply function over annual NDVI collection
 meanNDVI = annualNDVI.map(extract_ndvi)
 
-# Extract lists of NDVI values and years
+# Extract NDVI values and years as Python lists (client-side!)
+# → pulls data from Earth Engine servers to your local environment
 ndvi_values = meanNDVI.aggregate_array('mean_NDVI').getInfo()
 date = meanNDVI.aggregate_array('year').getInfo()
 
-# Convert results to a Pandas DataFrame for plotting or further analysis
+# Convert FeatureCollection to pandas DataFrame for plotting/analysis (structured table)
 annual_df = geemap.ee_to_df(ee.FeatureCollection(meanNDVI))
+# Final result: DataFrame with columns like:
+# year | mean_NDVI
 annual_df
 ```
-#### 2.4.2 Plots of Monthly NDVI with Annual Mean on top
+
+
+#### 2.4.2 Plots of Annual Mean with Monthly Standard Deviation
 The following plot illustrates the annual mean NDVI of Bavarian forests from 2013 to 2025 (blue line) along with the monthly variability (shaded orange area representing ±1 standard deviation). This visualization highlights both long-term trends and seasonal fluctuations in forest greenness over the study period.
 
 ![Monthly & Annual NDVI Mean in Bavarian Forests (2013–2025)](results/monthly_ndvi_plot.png)
@@ -349,7 +373,9 @@ The following plot illustrates the annual mean NDVI of Bavarian forests from 201
 This figure shows that the annual mean NDVI stays fairly stable between about 0.31 and 0.34, indicating relatively consistent forest vegetation conditions during the study period. Lower values appear around 2015 and 2018, which may reflect temporary stress events such as drought or disturbance. After 2019, the values gradually increase, reaching some of the highest levels around 2023–2025.
 The shaded band is shaped by seasonal fluctuations in vegetation greenness, showing that NDVI varies within each year as forests transition between dormant and peak growing seasons.
 
-##### 2.5.3 Boxplots of monthly NDVIs
+
+
+##### 2.4.3 Boxplots of monthly NDVIs
 Monthly NDVI distributions for Bavarian forests (April–October, 2013–2025) are visualized using boxplots. Each box represents the range, median, and distribution of NDVI values for a single year, where the central line represents the median, the box indicates the interquartile range (IQR), and the whiskers show the broader range of observed values.
 
 ![Monthly NDVI Boxplots in Bavarian Forests (2013–2025)](results/monthly_boxplots_ndvi_bavaria_forests.png)
