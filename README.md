@@ -234,7 +234,7 @@ print("Check this website to see GEE Task Manager: https://code.earthengine.goog
 
 
 
-### 2.2 Maps of Annual NDVI Mean
+### 2.2 Grid of Maps with Annual NDVI Median (2013-2025)
 Yearly median NDVI maps for Bavarian forests (2013–2025) are plotted in a grid layout using Cartopy and matplotlib. Each subplot shows NDVI for a single year, with forest areas highlighted according to a defined color palette. Gridlines, titles, and a horizontal colorbar are added for clarity, and the final figure is saved as a high-resolution PNG.
 
 ![Yearly Median NDVI in Bavarian Forests (2013–2025)](results/Annual_NDVI_Bavaria_maps_2013_2025.png)
