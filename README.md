@@ -298,7 +298,7 @@ monthly_NDVI = ee.ImageCollection.fromImages(
 monthly_NDVI
 ```
 
-Mean NDVI values are computed for each month across Bavaria using the monthly composites. The results are extracted as features containing the year, month, and mean NDVI, then converted to a Pandas DataFrame for further analysis, plotting, or statistical evaluation.
+Mean NDVI values are computed for each month across Bavaria using the monthly composites. The results are extracted as features containing the year, month, and mean NDVI, then converted to a Pandas DataFrame.
 
 ``` python
 # Function to extract a single NDVI value (mean) from each monthly image
